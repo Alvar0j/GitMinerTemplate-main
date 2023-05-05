@@ -35,7 +35,8 @@ public class Comment {
 
     }
 
-    public Comment(String body, String createdAt, String updatedAt, User author) {
+    public Comment(Long id, String body, String createdAt, String updatedAt, User author) {
+        this.id = id;
         this.body = body;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

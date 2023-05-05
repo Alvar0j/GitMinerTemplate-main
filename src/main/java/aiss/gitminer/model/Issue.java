@@ -15,8 +15,8 @@ import java.util.List;
 public class Issue {
 
     @Id
-    @JsonProperty("id")
-    private String id;
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    private Long id;
 
     @JsonProperty("ref_id")
     private String refId;
@@ -55,15 +55,40 @@ public class Issue {
     private String webUrl;
 
     @JsonProperty("comments")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "issueId")
     private List<Comment> comments;
 
-    public String getId() {
+    public Issue() {
+    }
+
+    public Issue(Long id, String refId, String title, String description,
+                 String state, String createdAt, String updatedAt,
+                 String closedAt, List<String> labels, User author,
+                 User assignee, Integer upvotes, Integer downvotes,
+                 String webUrl, List<Comment> comments) {
+        this.id = id;
+        this.refId = refId;
+        this.title = title;
+        this.description = description;
+        this.state = state;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.closedAt = closedAt;
+        this.labels = labels;
+        this.author = author;
+        this.assignee = assignee;
+        this.upvotes = upvotes;
+        this.downvotes = downvotes;
+        this.webUrl = webUrl;
+        this.comments = comments;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
