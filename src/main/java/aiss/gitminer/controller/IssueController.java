@@ -36,7 +36,7 @@ public class IssueController {
 
     //GET http://localhost:8080/gitminer/issues/1554713335/comments
     @GetMapping("/{id}/comments")
-    public List<Comment> getIssueComments(@PathVariable String id) throws ProjectNotFoundException {
+    public List<Comment> issueComments(@PathVariable String id) throws ProjectNotFoundException {
         Optional<Issue> optionalIssue = issueRepository.findById(id);
         if (!optionalIssue.isPresent()) {
             throw new ProjectNotFoundException();
