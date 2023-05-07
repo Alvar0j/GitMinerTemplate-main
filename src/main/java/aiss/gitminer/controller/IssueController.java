@@ -1,7 +1,8 @@
 package aiss.gitminer.controller;
 
+import aiss.gitminer.exception.ProjectNotFoundException;
+import aiss.gitminer.model.Comment;
 import aiss.gitminer.model.Issue;
-import aiss.gitminer.repository.CommentRepository;
 import aiss.gitminer.repository.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,24 @@ public class IssueController {
 
     //GET http://localhost:8080/gitminer/issues/{id}
     @GetMapping("/{id}")
-    public Issue findOne (@PathVariable long id){
-        Optional<Issue> issue = issueRepository.findById(id);
+    public Issue findOne(@PathVariable String id) throws ProjectNotFoundException {
+        Optional<Issue> issue= issueRepository.findById(id);
+        if(!issue.isPresent()){
+            throw new ProjectNotFoundException();
+        }
         return issue.get();
+    }
+
+    //GET http://localhost:8080/gitminer/issues/1554713335/comments
+    @GetMapping("/{id}/comments")
+    public List<Comment> getIssueComments(@PathVariable String id) throws ProjectNotFoundException {
+        Optional<Issue> optionalIssue = issueRepository.findById(id);
+        if (!optionalIssue.isPresent()) {
+            throw new ProjectNotFoundException();
+        }
+        Issue issue = optionalIssue.get();
+        List<Comment> comments = issue.getComments();
+        return comments;
     }
 
     //POST http://localhost:8080/gitminer/issues
@@ -49,7 +65,7 @@ public class IssueController {
     //DELETE http://localhost:8080/gitminer/issues/{id}
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id){
+    public void delete(@PathVariable String id){
         if (issueRepository.existsById(id)){
             issueRepository.deleteById(id);
         }

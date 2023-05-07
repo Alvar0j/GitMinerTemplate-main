@@ -1,53 +1,51 @@
 
 package aiss.gitminer.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Comment")
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long id;
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("body")
     @NotEmpty(message = "The message cannot be empty.")
     @Column(columnDefinition="TEXT")
     private String body;
+
+    @JsonProperty("author")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    @OneToOne(cascade=CascadeType.ALL)
+    private User author;
+
     @JsonProperty("created_at")
     @NotEmpty(message = "The field created_at cannot be empty.")
     private String createdAt;
     @JsonProperty("updated_at")
     private String updatedAt;
 
-    @JsonProperty("author")
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    @OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
-    private User author;
-
     public Comment() {
 
     }
 
-    public Comment(Long id, String body, String createdAt, String updatedAt, User author) {
-        this.id = id;
+    public Comment(String id,String body, String createdAt, String updatedAt, User author) {
+        this.id= id;
         this.body = body;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.author = author;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

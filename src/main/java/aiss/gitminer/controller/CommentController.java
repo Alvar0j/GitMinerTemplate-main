@@ -21,10 +21,10 @@ public class CommentController {
     public List<Comment> findAll() {
         return repository.findAll();
     }
-
     //GET http://localhost:8080/gitminer/comments/{id}
+
     @GetMapping("/{id}")
-    public Comment findOne(@PathVariable long id){
+    public Comment findOne(@PathVariable String id){
         Optional<Comment> comment = repository.findById(id);
         return comment.get();
     }
@@ -34,14 +34,14 @@ public class CommentController {
     @PostMapping
     public Comment create(@Valid @RequestBody Comment comment){
         Comment _comment = repository.
-                save(new Comment(comment.getId(),
-                        comment.getBody(), comment.getCreatedAt(),
-                        comment.getUpdatedAt(), comment.getAuthor()));
+                save(new Comment(comment.getId(),comment.getBody(), comment.getCreatedAt(), comment.getUpdatedAt(), comment.getAuthor()));
         return _comment;
     }
-    /*
+
+    //El PUT no hace falta
+    //PUT http://localhost:8080/gitminer/comments/{id}
+    /*@PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PostMapping
     public void update (@Valid @RequestBody Comment updateComment, @PathVariable long id){
         Optional<Comment> commentData = repository.findById(id);
 
@@ -51,12 +51,15 @@ public class CommentController {
         _comment.setUpdatedAt(updateComment.getUpdatedAt());
         _comment.setAuthor(updateComment.getAuthor());
         repository.save(_comment);
-    }*/
+    }
+
+     */
+
 
     //DELETE http://localhost:8080/gitminer/comments/{id}
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id){
+    public void delete(@PathVariable String id){
         if (repository.existsById(id)){
             repository.deleteById(id);
         }

@@ -1,13 +1,9 @@
 
 package aiss.gitminer.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -15,8 +11,8 @@ import java.util.List;
 public class Issue {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long id;
+    @JsonProperty("id")
+    private String id;
 
     @JsonProperty("ref_id")
     private String refId;
@@ -55,40 +51,15 @@ public class Issue {
     private String webUrl;
 
     @JsonProperty("comments")
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "issueId")
     private List<Comment> comments;
 
-    public Issue() {
-    }
-
-    public Issue(Long id, String refId, String title, String description,
-                 String state, String createdAt, String updatedAt,
-                 String closedAt, List<String> labels, User author,
-                 User assignee, Integer upvotes, Integer downvotes,
-                 String webUrl, List<Comment> comments) {
-        this.id = id;
-        this.refId = refId;
-        this.title = title;
-        this.description = description;
-        this.state = state;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.closedAt = closedAt;
-        this.labels = labels;
-        this.author = author;
-        this.assignee = assignee;
-        this.upvotes = upvotes;
-        this.downvotes = downvotes;
-        this.webUrl = webUrl;
-        this.comments = comments;
-    }
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -201,6 +172,30 @@ public class Issue {
     }
 
     public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Issue() {
+    }
+
+    public Issue(String id, String refId, String title, String description,
+                 String state, String createdAt, String updatedAt, String closedAt,
+                 List<String> labels, User author, User assignee, Integer upvotes,
+                 Integer downvotes, String webUrl, List<Comment> comments) {
+        this.id = id;
+        this.refId = refId;
+        this.title = title;
+        this.description = description;
+        this.state = state;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.closedAt = closedAt;
+        this.labels = labels;
+        this.author = author;
+        this.assignee = assignee;
+        this.upvotes = upvotes;
+        this.downvotes = downvotes;
+        this.webUrl = webUrl;
         this.comments = comments;
     }
 
