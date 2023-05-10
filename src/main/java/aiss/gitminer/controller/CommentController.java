@@ -1,5 +1,6 @@
 package aiss.gitminer.controller;
 
+import aiss.gitminer.exception.CommentNotFoundException;
 import aiss.gitminer.model.Comment;
 import aiss.gitminer.repository.CommentRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,8 +50,11 @@ public class CommentController {
 
     })
     @GetMapping("/{id}")
-    public Comment findOne(@Parameter(description = "id of the comment to be searched") @PathVariable String id){
+    public Comment findOne(@Parameter(description = "id of the comment to be searched") @PathVariable String id) throws CommentNotFoundException {
         Optional<Comment> comment = repository.findById(id);
+        if(!comment.isPresent()){
+            throw new CommentNotFoundException();
+        }
         return comment.get();
     }
 

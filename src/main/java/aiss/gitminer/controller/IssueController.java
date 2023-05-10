@@ -1,5 +1,6 @@
 package aiss.gitminer.controller;
 
+import aiss.gitminer.exception.IssueNotFoundException;
 import aiss.gitminer.exception.ProjectNotFoundException;
 import aiss.gitminer.model.Comment;
 import aiss.gitminer.model.Issue;
@@ -50,20 +51,20 @@ public class IssueController {
 
     })
     @GetMapping("/{id}")
-    public Issue findOne(@Parameter(description = "id of the issue to be searched") @PathVariable String id) throws ProjectNotFoundException {
+    public Issue findOne(@Parameter(description = "id of the issue to be searched") @PathVariable String id) throws IssueNotFoundException {
         Optional<Issue> issue= issueRepository.findById(id);
         if(!issue.isPresent()){
-            throw new ProjectNotFoundException();
+            throw new IssueNotFoundException();
         }
         return issue.get();
     }
 
     //GET http://localhost:8080/gitminer/issues/1554713335/comments
     @GetMapping("/{id}/comments")
-    public List<Comment> issueComments(@PathVariable String id) throws ProjectNotFoundException {
+    public List<Comment> issueComments(@PathVariable String id) throws IssueNotFoundException {
         Optional<Issue> optionalIssue = issueRepository.findById(id);
         if (!optionalIssue.isPresent()) {
-            throw new ProjectNotFoundException();
+            throw new IssueNotFoundException();
         }
         Issue issue = optionalIssue.get();
         List<Comment> comments = issue.getComments();
